@@ -1,0 +1,245 @@
+:root {
+  --color-bg: #1e1e1e;
+  --color-text-main: #fff;
+  --color-primary: #3498db;
+  --image-max-width: 600px;
+  --image-max-height: 300px;
+  --image-margin: 1rem;
+  --font-family: 'HK Grotesk', sans-serif;
+  --font-family-header: 'HK Grotesk', sans-serif;
+  --navbar-bg: #695e5e;
+  --navbar-height: 50px;
+  --navbutton-bg: #77b4b1;
+  --navbutton-bghover: #69a09d;
+  --navbtn-height: auto;
+  --contentbg: #668a88;
+  --dyncontentbg: #6b668a;
+  --postbgcolor: #e0212a;
+  --PostMaxTextWidth: 90%;
+  --UPLOADBGcolor: #695e5e;
+  --uploadbuttoncolor: #77b4b1;
+  --uploadbuttonhovercolor: #69a09d;
+}
+button {
+  transition: 0.3s;
+}
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  border: none;
+}
+#nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--navbar-bg);
+  padding: 10px 20px;
+}
+#nav-bar {
+  min-height: var(--navbar-height);
+
+  border: none;
+  color: black;
+
+  text-align: left;
+  display: flexbox;
+}
+#nav-bar button {
+  background-color: var(--navbutton-bg);
+  border: 2px solid;
+  border-color: var(--navbar-bg);
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  height: var(--navbtn-height);
+}
+#nav-bar button:hover {
+  background-color: var(--navbutton-bghover);
+}
+input#searchbar {
+  background-color: var(--navbutton-bg);
+  border: 2px solid var(--navbar-bg);
+  color: black;
+  padding: 15px 32px;
+  text-align: left;
+  display: inline-block;
+  font-size: 16px;
+}
+
+button#search-btn {
+  background-color: var(--navbutton-bg);
+  border: 2px solid var(--navbar-bg);
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+}
+button#search-btn:hover {
+  background-color: var(--navbutton-bghover);
+}
+input#searchbar:hover {
+  background-color: var(--navbutton-bghover);
+}
+#content {
+  background-color: var(--contentbg);
+  color: var(--color-text-main);
+  padding: 10px;
+  text-align: center;
+  display: grid;
+}
+#postcntbox {
+  display: flex;
+}
+#postcount p {
+  display: inline-block;
+}
+#dyncontent {
+  background-color: var(--dyncontentbg);
+  color: var(--color-text-main);
+  padding: 20px 20px 20px 20px;
+}
+
+.iecontent {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.ieraksts {
+  background-color: var(--postbgcolor);
+  color: var(--color-text-main);
+  padding: 10px;
+  text-align: center;
+  border: 2px solid transparent;
+  margin: 10px;
+  max-width: fit-content;
+  max-height: fit-content;
+}
+.ieraksts img {
+  max-width: var(--image-max-width);
+  max-height: var(--image-max-height);
+  margin: var(--image-margin);
+}
+.ieraksts #p {
+  text-align: justify;
+  max-width: var(--PostMaxTextWidth);
+  text-wrap: pretty;
+  margin: var(--image-margin);
+}
+
+#pagenum {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+footer P {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: #3498db;
+}
+
+.upload {
+  z-index: 4000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--UPLOADBGcolor);
+  padding: 20px;
+  border-radius: 10px;
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: #3498db;
+
+  border-radius: 10px;
+}
+.upload input::-webkit-file-upload-button {
+  color: black;
+  background-color: var(--navbutton-bg);
+  border: 2px solid var(--navbar-bg);
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+}
+.upload input::hover {
+  background-color: var(--uploadbuttonhovercolor);
+}
+.upload P {
+  text-align: center;
+  display: flex;
+  justify-content: left;
+  color: #3498db;
+}
+.upload button {
+  background-color: var(--uploadbuttoncolor);
+  border: 2px solid var(--navbar-bg);
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+}
+.upload button:hover {
+  background-color: var(--uploadbuttonhovercolor);
+}
+
+.upload #preview {
+  display: flex;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.editview {
+  z-index: 1000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 500px;
+  transform: translate(-50%, -50%);
+  background-color: var(--UPLOADBGcolor);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  display: inline-block;
+  justify-content: center;
+  color: #94eeee;
+  border-radius: 10px;
+}
+.editfield {
+  display: flex;
+  justify-content: center;
+}
+.edit #preview {
+  display: flex;
+  max-width: 200px;
+  max-height: 200px;
+}
+.editier {
+  flex-direction: column;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.editier h1 {
+  font-size: 30px;
+  color: #10cedb;
+}
+button {
+  background-color: var(--navbutton-bg);
+  border: 2px solid var(--navbar-bg);
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+}
+button:hover {
+  background-color: var(--navbutton-bghover);
+}
