@@ -20,7 +20,9 @@ function editfn(number){
 
 
 }
-
+function closededit(){
+  seteditpost(false);
+}
 
  return (
   <div>
@@ -58,13 +60,17 @@ function editfn(number){
      <div>{closeupload ? <Upload CLOSBTN={() => setcloseupload(!closeupload)} /> : null}</div>
     </div>
     <div id="content">
-     <p>Lietotnes ieraksti</p>
+    <div className="content-header">
+      
+    <Ierakstuskaits />
+      <h1>Lietotnes ieraksti</h1>
+      </div>
      <div id="dyncontent">
-        <p>{editpostid}</p>
-      <Ierakstuskaits />
+        <p>{editpostid} : ieraksts #noņemt velak</p>
+     
       <Ieraksts getmaxpage={(maxpage) => setmaxpage(maxpage)} pageoffset={PAGEOFFSET} editpostid={(postid) => editfn(postid)} />
       <PageBTN maxpages={maxpage} getcontent={(page) => setPAGEOFFSET(page)}  />
-      <div>{editpost ? <EditPost editpostid={editpostid} /> : null}</div>
+      <div>{editpost ? <EditPost editpostid={editpostid}  close={()=>closededit()} /> : null}</div>
         
      </div>
     </div>

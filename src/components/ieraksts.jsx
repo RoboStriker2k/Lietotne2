@@ -1,7 +1,7 @@
 export default Ieraksts;
 import { DeletePost } from "./DeletePost";
 import { useEffect, useState } from "react";
-
+import Multiimgdisplay from "./Multiimgdisplay";
 // eslint-disable-next-line react/prop-types
 function Ieraksts({ getmaxpage, pageoffset, editpostid }) {
  let [ieraksti, setIeraksti] = useState([]);
@@ -92,6 +92,7 @@ function Ieraksts({ getmaxpage, pageoffset, editpostid }) {
       <h1>{ieraksts.title}</h1>
       <p>{ieraksts.pdesc}</p>
       {ieraksts.imgpath ? <img src={imgurl + ieraksts.imgpath} alt={ieraksts.title} /> : null}
+      {ieraksts.imgarr ? <Multiimgdisplay imgarr={ieraksts.imgarr}  /> : null}
       <button type="button" onClick={() => editpostid(ieraksts.idposts)}>Labot</button>
      </div>
     ))}
