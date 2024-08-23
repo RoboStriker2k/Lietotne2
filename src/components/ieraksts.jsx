@@ -67,9 +67,7 @@ function Ieraksts({ getmaxpage, pageoffset, editpostid }) {
 
  return (
   <div>
-   <div id="postcntbox">
-    <p>Atrasto ierakstu skaits:{postcnt}</p>
-   </div>
+  
    <div id="dzest">
     {deletestatus ? (
      <div>
@@ -82,7 +80,9 @@ function Ieraksts({ getmaxpage, pageoffset, editpostid }) {
      <button onClick={toggledelete}>Ierakstu atlase</button>
     )}
    </div>
-
+ <div id="postcntbox">
+    <p>Atrasto ierakstu skaits:{postcnt}</p>
+   </div>
    <div id="ieraksti" className="iecontent">
     {ieraksti.lenght === 0 ? <p>Nav ierakstu</p> : null}
 

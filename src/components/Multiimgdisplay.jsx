@@ -14,7 +14,7 @@ let editstatus=props.editstatus;
      <div key = {index}>
       <img src={imgurl + img}  />
 
-      {editstatus ? <input className="multiimgcheck" type="checkbox" id={index} /> : null}
+      {editstatus ? <input className="multiimgcheck" type="checkbox" id={img} /> : null}
      </div>
     ))}
    </div>

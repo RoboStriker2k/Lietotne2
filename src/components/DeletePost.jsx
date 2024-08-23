@@ -17,7 +17,7 @@ export function DeletePost() {
   if (deleteselection.length > 1) {
    for (let i = 0; i < deleteselection.length; i++) {
     deleteform.append("idlist", deleteselection[i]);
-    console.log("added" + deleteselection[i]);
+
    }
   } else if (deleteselection.length == 1) {
    deleteform.append("idlist", deleteselection[0]);

@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import Multiimgdisplay from "./Multiimgdisplay";
 import "../css/main.css";
 
-let removeflag = false;
-var file = null;
-let replaceflag = false;
+
+
+
 
 // eslint-disable-next-line react/prop-types
 function EditPost({ editpostid, close }) {
@@ -77,6 +77,65 @@ function EditPost({ editpostid, close }) {
   reader.readAsDataURL(img);
   setpoststate({ ...poststate, preview: imgarr });
  }
+
+
+ function removechecked() {
+  console.log("removing checked");
+  let selectledelate = document.querySelectorAll("input[type=checkbox]:checked");
+  let deleteform = new FormData();
+  let removeflag = true;
+  let replaceflag = false;
+ let imgarr = [];
+  if (selectledelate.length === 0) {
+   return;
+  } else if (selectledelate.length > 1) {
+   for (let i = 0; i < selectledelate.length; i++) {
+    const elem = document.getElementById(selectledelate[i].id);
+    if (elem) {
+     removeflag = true
+     if (imgarr.includes(selectledelate[i].id)) {
+      continue;
+     } else if (elem.classList.contains("multiimgcheck")) {
+      imgarr.push(selectledelate[i].id);
+     } else {
+      imgarr.push(selectledelate[i].id);
+      deleteform.append("imgpath", selectledelate[i].id);
+     }
+    }
+   }
+  }else if (selectledelate.length == 1) {
+    const elem = document.getElementById(selectledelate[0].id);
+    console.log(elem);
+    imgarr.push(selectledelate[0].id);
+    console.log(selectledelate[0].id);
+  }
+  
+   if (imgarr != null) {
+    deleteform.append("imgarr", JSON.stringify(imgarr));
+   }
+   deleteform.append("replaceflag", replaceflag.toString());
+   deleteform.append("removeflag", removeflag.toString());
+   deleteform.append("idpost", editpostid.toString());
+   fetch(`http://localhost:3000/api/editpost/`, {
+    method: "POST",
+    body: deleteform,
+   })
+    .then((response) => response.json())
+    .then((data) => {
+     console.log(data);
+    })
+    .catch((error) => {
+     console.error("Error:", error);
+    });
+  
+ 
+ }
+
+
+
+
+
+
 
  return (
   <>
@@ -163,31 +222,22 @@ function EditPost({ editpostid, close }) {
 }
 
 //todo implement  uopload preview and delete from upload
-var counter = 0;
-function editfn(poststate, editpostid) {
- console.log("called editfn" + counter++);
- let oldtitle = poststate.ieraksti[0].title;
- let olddesc = poststate.ieraksti[0].pdesc;
- let newtitle = poststate.newtitle;
- let newpdesc = poststate.newpdesc;
 
+function editfn(poststate, editpostid) {
  let formdata = new FormData();
- if (oldtitle != newtitle) {
-  formdata.append("title", newtitle);
+ if (poststate.ieraksti[0].title != poststate.newtitle) {
+  formdata.append("title",poststate.newtitle);
  }
- if (olddesc != newpdesc) {
-  formdata.append("pdesc", newpdesc);
- }
- if (file != null) {
-  formdata.append("file", file);
+ if (poststate.ieraksti[0].pdesc != poststate.newpdesc) {
+  formdata.append("pdesc",poststate.newpdesc);
  }
  if (this.files != null) {
-  for (let i = 0; i < this.files.length; i++) {
-   formdata.append("file", this.files[i]);
+  for (let i = 0; i < poststate.files.length; i++) {
+   formdata.append("file", poststate.files[i]);
    console.log(i);
   }
  }
- formdata.append("replaceflag", this.replaceflag.toString());
+ formdata.append("replaceflag", "false");
  formdata.append("removeflag", this.removeflag.toString());
  formdata.append("idpost", editpostid);
 
@@ -201,70 +251,3 @@ function editfn(poststate, editpostid) {
   });
 }
 
-// eslint-disable-next-line no-unused-vars
-function onFileSelected() {
- let fileupl = document.getElementById("editupl");
- let preview = document.getElementById("previewimg");
- if (fileupl.files.length === 0) {
-  return;
- }
- let reader = new FileReader();
- reader.onload = function () {
-  preview.src = reader.result;
- };
- reader.readAsDataURL(fileupl.files[0]);
- file = fileupl.files[0];
-}
-
-function removechecked() {
- let selectledelate = document.querySelectorAll("input[type=checkbox]:checked");
- let deleteform = new FormData();
- console.log("ran", selectledelate);
- if (selectledelate.length === 0) {
-  return;
- } else {
-  let delsel = [];
-  for (let i = 0; i < selectledelate.length; i++) {
-   const elem = document.getElementById(selectledelate[i].id);
-   if (elem) {
-    console.log(elem);
-    removeflag = true;
-    console.log("imagepathcheckrun", elem.classList.contains("multiimgcheck"));
-    if (delsel.includes(selectledelate[i].id)) {
-     continue;
-    } else if (elem.classList.contains("multiimgcheck")) {
-     delsel.push(selectledelate[i].id);
-     this.imgarr.push(selectledelate[i].id);
-     console.log("imagepathcheckrun", elem.classList.contains("multiimgcheck"));
-    } else {
-     delsel.push(selectledelate[i].id);
-     deleteform.append("imgpath", selectledelate[i].id);
-     console.log("imagerun");
-    }
-   }
-  }
-
-  if (this.imgarr != null) {
-   deleteform.append("imgarr", JSON.stringify(this.imgarr));
-  }
-
-  deleteform.append("replaceflag", replaceflag.toString());
-  deleteform.append("removeflag", removeflag.toString());
-  deleteform.append("idpost", this.Posttatus.idposts.toString());
-  fetch(`http://localhost:3000/api/editpost/`, {
-   method: "POST",
-   body: deleteform,
-  })
-   .then((response) => response.json())
-   .then((data) => {
-    console.log(data);
-   })
-   .catch((error) => {
-    console.error("Error:", error);
-   });
-  removeflag = false;
-  this.imgpath = "";
-  this.imgarr = [];
- }
-
-}

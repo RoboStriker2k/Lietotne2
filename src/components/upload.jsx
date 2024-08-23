@@ -1,42 +1,87 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // eslint-disable-next-line react/prop-types
 export default function Upload({ CLOSBTN }) {
  // eslint deva prop-types kļūdu funkcijas pogai IDE
+ const [uploadstate, setuploadstate] = useState({
+  title: "Ieraksta virsraksts",
+  pdesc: "Ieraksta apraksts",
+  files: [],
+  preview: [],
+  statenr: 0,
+ });
 
  useEffect(() => {
-  function upload() {
-   let fileupl = document.getElementById("fileupl");
-   let preview = document.getElementById("preview");
-   if (fileupl.files.length === 0) {
-    return;
-   }
-   let reader = new FileReader();
-   reader.onload = function () {
-    preview.src = reader.result;
-   };
-   reader.readAsDataURL(fileupl.files[0]);
+  if (uploadstate.statenr != 0) {
+   setuploadstate({ ...uploadstate, statenr: 0 });
   }
-  document.getElementById("fileupl").addEventListener("change", upload);
-  upload();
-  return () => {};
- }, []);
+  return () => {
+
+  };
+ }, [uploadstate]);
 
  function onUpload() {
-  let fileupl = document.getElementById("fileupl");
-  let ptitle = document.getElementById("uploadtitle");
-  let pdesc = document.getElementById("uploadpdesc");
+
   let formdata = new FormData();
-  formdata.append("title", ptitle.value);
-  formdata.append("pdesc", pdesc.value);
-  formdata.append("file", fileupl.files[0]);
+  formdata.append("title", uploadstate.title);
+  formdata.append("pdesc", uploadstate.pdesc);
+  if (uploadstate.files != null) {
+    for (let i = 0; i < uploadstate.files.length; i++) {
+     formdata.append("file", uploadstate.files[i]);
+    }
+   }
   fetch("http://localhost:3000/api/addpost", {
    method: "post",
    body: formdata,
   })
    .then((response) => response.json())
+   .then(() => {
+     setuploadstate({
+      title: "Ieraksta virsraksts",
+      pdesc: "Ieraksta apraksts",
+      files: [],
+      preview: [],
+      statenr: 3,
+     })
+   })
    .catch((error) => {
     console.error("Error:", error);
    });
+
+
+ }
+
+ function onMultipleFilesSelected(event) {
+  let filearr = [];
+  for (let i = 0; i < event.target.files.length; i++) {
+   filearr.push(event.target.files[i]);
+   renderpic(event.target.files[i]);
+  }
+  setuploadstate({ ...uploadstate, files: filearr,  statenr: 1 });
+ }
+
+ function removefromupload(fileindex) {
+  let pics = uploadstate.preview;
+  let filearr = uploadstate.files;
+  if (fileindex != -1) {
+   pics.splice(fileindex, 1);
+  }
+  if (uploadstate.files != null) {
+   if (fileindex != -1) {
+    filearr.splice(fileindex, 1);
+   }
+  }
+  setuploadstate({ ...uploadstate, files: filearr, preview: pics, statenr: -1 });
+ }
+ function renderpic(img) {
+  let imgarr = uploadstate.preview;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+   if (e.target) {
+    imgarr.push(e.target.result) ?? "";
+   }
+  };
+  reader.readAsDataURL(img);
+  setuploadstate({ ...uploadstate, preview: imgarr, statenr: uploadstate.statenr + 1 });
  }
 
  return (
@@ -45,13 +90,32 @@ export default function Upload({ CLOSBTN }) {
     <form action="upload" onSubmit={(e) => e.preventDefault()}>
      <h1>Pievienot</h1>
      <p>Ieraksta virsraksts</p>
-     <input type="text" id="uploadtitle" placeholder="Ieraksta virsraksts" />
+     <input
+      type="text"
+      id="uploadtitle"
+      placeholder={uploadstate.title}
+      onChange={(e) => setuploadstate({ ...uploadstate, title: e.target.value })}
+     />
      <p>Ieraksta apraksts</p>
-     <input type="text" id="uploadpdesc" placeholder="Ieraksta apraksts" />
+     <input
+      type="text"
+      id="uploadpdesc"
+      placeholder={uploadstate.pdesc}
+      onChange={(e) => setuploadstate({ ...uploadstate, pdesc: e.target.value })}
+     />
      <div>
       <p>Ieraksta attels (var nepievienot)</p>
-      <img id="preview" />
-      <input id="fileupl" type="file" />
+      <input id="fileupl" multiple type="file" onChange={(e) => onMultipleFilesSelected(e)} />
+     </div>
+     <div>
+      {uploadstate.preview.map((previewimg, index) => (
+       <div className="editgrid" key={index}>
+        <img id="preview" src={previewimg} />
+        <button className="removebtn" type="button" onClick={() => removefromupload(index)}>
+         X
+        </button>
+       </div>
+      ))}
      </div>
      <div>
       <button onClick={onUpload}>Upload</button>

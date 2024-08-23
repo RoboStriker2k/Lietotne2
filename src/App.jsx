@@ -66,8 +66,6 @@ function closededit(){
       <h1>Lietotnes ieraksti</h1>
       </div>
      <div id="dyncontent">
-        <p>{editpostid} : ieraksts #noņemt velak</p>
-     
       <Ieraksts getmaxpage={(maxpage) => setmaxpage(maxpage)} pageoffset={PAGEOFFSET} editpostid={(postid) => editfn(postid)} />
       <PageBTN maxpages={maxpage} getcontent={(page) => setPAGEOFFSET(page)}  />
       <div>{editpost ? <EditPost editpostid={editpostid}  close={()=>closededit()} /> : null}</div>
