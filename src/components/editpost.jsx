@@ -1,17 +1,9 @@
 export default EditPost;
 import { useEffect, useState } from "react";
 import Multiimgdisplay from "./Multiimgdisplay";
-import "../css/main.css";
-
-
-
-
-
 // eslint-disable-next-line react/prop-types
-function EditPost({ editpostid, close }) {
- let imgurl = "http://localhost:3000/getfoto/";
-
- const [view, setview] = useState(false);
+function EditPost({ editid, close }) {
+ let imgurl = "http://localhost:3000/getfoto/?file=";
 
  const [poststate, setpoststate] = useState({
   newtitle: "",
@@ -21,10 +13,10 @@ function EditPost({ editpostid, close }) {
   files: [],
   preview: [],
  });
-
+ let [singlerun, setsinglerun] = useState(true);
  useEffect(() => {
   function getpost() {
-   fetch(`http://localhost:3000/api/getpost/?postiid=${editpostid}`, {
+   fetch(`http://localhost:3000/api/getpost/?postiid=${editid}`, {
     method: "GET",
    })
     .then((response) => response.json())
@@ -36,11 +28,11 @@ function EditPost({ editpostid, close }) {
     });
   }
 
-  if (editpostid != 0) {
+  if (singlerun) {
    getpost();
-   setview(true);
+   setsinglerun(false);
   }
- }, [editpostid, poststate]);
+ }, [editid, poststate, singlerun]);
 
  function onMultipleFilesSelected(event) {
   let filearr = [];
@@ -78,21 +70,20 @@ function EditPost({ editpostid, close }) {
   setpoststate({ ...poststate, preview: imgarr });
  }
 
-
  function removechecked() {
   console.log("removing checked");
   let selectledelate = document.querySelectorAll("input[type=checkbox]:checked");
   let deleteform = new FormData();
   let removeflag = true;
   let replaceflag = false;
- let imgarr = [];
+  let imgarr = [];
   if (selectledelate.length === 0) {
    return;
   } else if (selectledelate.length > 1) {
    for (let i = 0; i < selectledelate.length; i++) {
     const elem = document.getElementById(selectledelate[i].id);
     if (elem) {
-     removeflag = true
+     removeflag = true;
      if (imgarr.includes(selectledelate[i].id)) {
       continue;
      } else if (elem.classList.contains("multiimgcheck")) {
@@ -103,75 +94,63 @@ function EditPost({ editpostid, close }) {
      }
     }
    }
-  }else if (selectledelate.length == 1) {
-    const elem = document.getElementById(selectledelate[0].id);
-    console.log(elem);
-    imgarr.push(selectledelate[0].id);
-    console.log(selectledelate[0].id);
+  } else if (selectledelate.length == 1) {
+   imgarr.push(selectledelate[0].id);
   }
-  
-   if (imgarr != null) {
-    deleteform.append("imgarr", JSON.stringify(imgarr));
-   }
-   deleteform.append("replaceflag", replaceflag.toString());
-   deleteform.append("removeflag", removeflag.toString());
-   deleteform.append("idpost", editpostid.toString());
-   fetch(`http://localhost:3000/api/editpost/`, {
-    method: "POST",
-    body: deleteform,
+
+  if (imgarr != null) {
+   deleteform.append("imgarr", JSON.stringify(imgarr));
+  }
+  deleteform.append("replaceflag", replaceflag.toString());
+  deleteform.append("removeflag", removeflag.toString());
+  deleteform.append("idpost", editid.toString());
+  fetch(`http://localhost:3000/api/editpost/`, {
+   method: "POST",
+   body: deleteform,
+  })
+   .then((response) => response.json())
+   .then((data) => {
+    console.log(data);
    })
-    .then((response) => response.json())
-    .then((data) => {
-     console.log(data);
-    })
-    .catch((error) => {
-     console.error("Error:", error);
-    });
-  
- 
+   .catch((error) => {
+    console.error("Error:", error);
+   });
  }
-
-
-
-
-
-
 
  return (
   <>
-   {view ? (
-    <div id="edit" className="editview">
+   <div id="edit" className="editview">
+    <div>
      <div>
+      <h1>Pievienot</h1>
       <div>
-       <h1>Pievienot</h1>
-       <div>
-        <label htmlFor="edittitle">Ieraksta virsraksts</label>
-        <input
-         id="edittitle"
-         type="text"
-         placeholder={poststate.newtitle}
-         onChange={(e) => poststate({ ...poststate, newtitle: e.target.value })}
-        />
-       </div>
-       <div>
-        <label htmlFor="editdesc">Ieraksta apraksts</label>
-        <input
-         id="editdesc"
-         type="text"
-         placeholder={poststate.newpdesc}
-         onChange={(e) => poststate({ ...poststate, newpdesc: e.target.value })}
-        />
-       </div>
-       <div>
-        <p>Pievienot attēlus</p>
-        <input id="editupl" multiple type="file" onChange={(e) => onMultipleFilesSelected(e)} />
-       </div>
+       <label htmlFor="edittitle">Ieraksta virsraksts</label>
+       <input
+        id="edittitle"
+        type="text"
+        placeholder={poststate.newtitle}
+        onChange={(e) => setpoststate({ ...poststate, newtitle: e.target.value })}
+       />
       </div>
-      <div className="editier">
-       <h1>Priekšskats</h1>
-       <div className="editieraksts" >
+      <div>
+       <label htmlFor="editdesc">Ieraksta apraksts</label>
+       <input
+        id="editdesc"
+        type="text"
+        placeholder={poststate.newpdesc}
+        onChange={(e) => setpoststate({ ...poststate, newpdesc: e.target.value })}
+       />
+      </div>
+      <div>
+       <p>Pievienot attēlus</p>
+       <input id="editupl" multiple type="file" onChange={(e) => onMultipleFilesSelected(e)} />
+      </div>
+     </div>
+     <div className="editier">
+      <h1>Priekšskats</h1>
+      <div className="editieraksts">
        {poststate.ieraksti.map((ieraksts, index) => (
-        <div  key={index}>
+        <div key={index}>
          <h1 id="previewtitle">{poststate.newtitle}</h1>
          <p id="previewdesc">{poststate.newpdesc}</p>
          {ieraksts.imgpath ? <img id="previewimg" src={imgurl + ieraksts.imgpath} /> : null}
@@ -188,59 +167,56 @@ function EditPost({ editpostid, close }) {
          </button>
         </div>
        ))}
-
-       </div>
       </div>
      </div>
-
-     <div>
-      <button type="button" onClick={() => removechecked()}>
-       Dzēst atzīmētos attēlus neatgriezeniski
-      </button>
-      <button onClick={() => editfn(poststate, editpostid)}>Labot ierakstu</button>
-      <button
-       onClick={() => {
-        setview(false);
-        close();
-       }}>
-       Atcelt
-      </button>
-      <button
-       onClick={() => {
-        setview(false);
-        close();
-       }}>
-       Aizvert
-      </button>
-     </div>
     </div>
-   ) : (
-    <></>
-   )}
+
+    <div>
+     <button type="button" onClick={() => removechecked()}>
+      Dzēst atzīmētos attēlus neatgriezeniski
+     </button>
+     <button onClick={() => editfn(poststate, editid)}>Labot ierakstu</button>
+     <button
+      onClick={() => {
+       close();
+       setsinglerun(true);
+      }}>
+      Atcelt
+     </button>
+     <button
+      onClick={() => {
+       close();
+       setsinglerun(true);
+      }}>
+      Aizvert
+     </button>
+    </div>
+   </div>
   </>
  );
 }
 
 //todo implement  uopload preview and delete from upload
 
-function editfn(poststate, editpostid) {
+function editfn(poststate, editid) {
  let formdata = new FormData();
+ console.log(poststate);
  if (poststate.ieraksti[0].title != poststate.newtitle) {
-  formdata.append("title",poststate.newtitle);
+  formdata.append("title", poststate.newtitle);
  }
  if (poststate.ieraksti[0].pdesc != poststate.newpdesc) {
-  formdata.append("pdesc",poststate.newpdesc);
+  formdata.append("pdesc", poststate.newpdesc);
  }
- if (this.files != null) {
+ if (poststate.files != null) {
   for (let i = 0; i < poststate.files.length; i++) {
    formdata.append("file", poststate.files[i]);
    console.log(i);
   }
  }
  formdata.append("replaceflag", "false");
- formdata.append("removeflag", this.removeflag.toString());
- formdata.append("idpost", editpostid);
-
+ formdata.append("removeflag", "false");
+ formdata.append("idpost", editid);
+ console.log(formdata);
  fetch(`http://localhost:3000/api/editpost/`, {
   method: "POST",
   body: formdata,
@@ -250,4 +226,3 @@ function editfn(poststate, editpostid) {
    console.error("Error:", error);
   });
 }
-

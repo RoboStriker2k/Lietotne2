@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 // eslint-disable-next-line react/prop-types
 export default function Upload({ CLOSBTN }) {
- // eslint deva prop-types kļūdu funkcijas pogai IDE
  const [uploadstate, setuploadstate] = useState({
   title: "Ieraksta virsraksts",
   pdesc: "Ieraksta apraksts",
@@ -12,41 +11,38 @@ export default function Upload({ CLOSBTN }) {
 
  useEffect(() => {
   if (uploadstate.statenr > 0) {
-    setTimeout(() => {
-     setuploadstate({ ...uploadstate, statenr: uploadstate.statenr - 1 });
-    },100)
-   }
+   setTimeout(() => {
+    setuploadstate({ ...uploadstate, statenr: uploadstate.statenr - 1 });
+   }, 100);
+  }
  }, [uploadstate]);
 
  function onUpload() {
-
   let formdata = new FormData();
   formdata.append("title", uploadstate.title);
   formdata.append("pdesc", uploadstate.pdesc);
   if (uploadstate.files != null) {
-    for (let i = 0; i < uploadstate.files.length; i++) {
-     formdata.append("file", uploadstate.files[i]);
-    }
+   for (let i = 0; i < uploadstate.files.length; i++) {
+    formdata.append("file", uploadstate.files[i]);
    }
+  }
   fetch("http://localhost:3000/api/addpost", {
    method: "post",
    body: formdata,
   })
    .then((response) => response.json())
    .then(() => {
-     setuploadstate({
-      title: "Ieraksta virsraksts",
-      pdesc: "Ieraksta apraksts",
-      files: [],
-      preview: [],
-      statenr: 3,
-     })
+    setuploadstate({
+     title: "Ieraksta virsraksts",
+     pdesc: "Ieraksta apraksts",
+     files: [],
+     preview: [],
+     statenr: 3,
+    });
    })
    .catch((error) => {
     console.error("Error:", error);
    });
-
-
  }
 
  function onMultipleFilesSelected(event) {
@@ -55,7 +51,7 @@ export default function Upload({ CLOSBTN }) {
    filearr.push(event.target.files[i]);
    renderpic(event.target.files[i]);
   }
-  setuploadstate({ ...uploadstate, files: filearr,  statenr: 1 });
+  setuploadstate({ ...uploadstate, files: filearr, statenr: 1 });
  }
 
  function removefromupload(fileindex) {

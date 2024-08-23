@@ -7,23 +7,10 @@ import PageBTN from "./components/PageBTN.jsx";
 import EditPost from "./components/editpost.jsx";
 function App() {
  let [closeupload, setcloseupload] = useState(false);
-
  let [maxpage, setmaxpage] = useState(0);
  let [PAGEOFFSET, setPAGEOFFSET] = useState(0);
-let [editpostid, seteditpostid] = useState(0);
-let [editpost, seteditpost] = useState(false);
-
-function editfn(number){
-  console.log ("called")
-    seteditpostid(number);
-  seteditpost(true);
-
-
-}
-function closededit(){
-  seteditpost(false);
-}
-
+ let [EditState, setEditState] = useState(false);
+ let [editid, seteditid] = useState(0);
  return (
   <div>
    <div className="container">
@@ -60,16 +47,22 @@ function closededit(){
      <div>{closeupload ? <Upload CLOSBTN={() => setcloseupload(!closeupload)} /> : null}</div>
     </div>
     <div id="content">
-    <div className="content-header">
-      
-    <Ierakstuskaits />
+     <div className="content-header">
+      <Ierakstuskaits />
       <h1>Lietotnes ieraksti</h1>
-      </div>
+     </div>
      <div id="dyncontent">
-      <Ieraksts getmaxpage={(maxpage) => setmaxpage(maxpage)} pageoffset={PAGEOFFSET} editpostid={(postid) => editfn(postid)} />
-      <PageBTN maxpages={maxpage} getcontent={(page) => setPAGEOFFSET(page)}  />
-      <div>{editpost ? <EditPost editpostid={editpostid}  close={()=>closededit()} /> : null}</div>
-        
+      <Ieraksts
+       getmaxpage={(maxpage) => setmaxpage(maxpage)}
+       pageoffset={PAGEOFFSET}
+       editid={(postid) => {seteditid(postid);setEditState(true);}}
+      />
+      <PageBTN maxpages={maxpage} getcontent={(page) => setPAGEOFFSET(page)} />
+      <div>
+       {EditState ? (
+        <EditPost editid={editid} close={() => setEditState(false)} />
+       ) : null}
+      </div>
      </div>
     </div>
    </div>
