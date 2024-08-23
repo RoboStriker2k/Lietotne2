@@ -11,12 +11,11 @@ export default function Upload({ CLOSBTN }) {
  });
 
  useEffect(() => {
-  if (uploadstate.statenr != 0) {
-   setuploadstate({ ...uploadstate, statenr: 0 });
-  }
-  return () => {
-
-  };
+  if (uploadstate.statenr > 0) {
+    setTimeout(() => {
+     setuploadstate({ ...uploadstate, statenr: uploadstate.statenr - 1 });
+    },100)
+   }
  }, [uploadstate]);
 
  function onUpload() {
@@ -70,7 +69,7 @@ export default function Upload({ CLOSBTN }) {
     filearr.splice(fileindex, 1);
    }
   }
-  setuploadstate({ ...uploadstate, files: filearr, preview: pics, statenr: -1 });
+  setuploadstate({ ...uploadstate, files: filearr, preview: pics, statenr: 1 });
  }
  function renderpic(img) {
   let imgarr = uploadstate.preview;
@@ -81,12 +80,12 @@ export default function Upload({ CLOSBTN }) {
    }
   };
   reader.readAsDataURL(img);
-  setuploadstate({ ...uploadstate, preview: imgarr, statenr: uploadstate.statenr + 1 });
+  setuploadstate({ ...uploadstate, preview: imgarr, statenr: 1 });
  }
 
  return (
   <div className="upload">
-   <div>
+   <div id={uploadstate.statenr}>
     <form action="upload" onSubmit={(e) => e.preventDefault()}>
      <h1>Pievienot</h1>
      <p>Ieraksta virsraksts</p>
