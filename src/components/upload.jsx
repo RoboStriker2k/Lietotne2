@@ -99,7 +99,7 @@ export default function Upload({ CLOSBTN }) {
       onChange={(e) => setuploadstate({ ...uploadstate, pdesc: e.target.value })}
      />
      <div>
-      <p>Ieraksta attels (var nepievienot)</p>
+     <p>Ieraksta attels -li (var arī nepievienot)</p>
       <input id="fileupl" multiple type="file" onChange={(e) => onMultipleFilesSelected(e)} />
      </div>
      <div>
