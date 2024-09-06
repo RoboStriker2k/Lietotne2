@@ -2,6 +2,7 @@ export default Ieraksts;
 import { DeletePost } from "./DeletePost";
 import { useEffect, useState } from "react";
 import Multiimgdisplay from "./Multiimgdisplay";
+import Galleryview from "./Galleryview";
 // eslint-disable-next-line react/prop-types
 function Ieraksts({ getmaxpage, pageoffset, editid }) {
  let [ieraksti, setIeraksti] = useState([]);
@@ -12,6 +13,10 @@ function Ieraksts({ getmaxpage, pageoffset, editid }) {
  let [psearch, setpsearch] = useState("");
  let [deletestatus, setdeletestatus] = useState(false);
  let [postcnt, setpostcnt] = useState(0);
+ let [gallerystate, setgallerystate] = useState({
+   postid: 0,
+   statenr: -1,
+ })
  useEffect(() => {
   setpoffset(pageoffset);
   document.getElementById("searchbar").addEventListener("input", (e) => {
@@ -57,6 +62,7 @@ function Ieraksts({ getmaxpage, pageoffset, editid }) {
  }
  return (
   <div>
+    <Galleryview  gallery={gallerystate}  resetgallery={()=>setgallerystate( { postid: 0, statenr: -1 })} />
    <div id="dzest">
     {deletestatus ? (
      <div>
@@ -75,15 +81,20 @@ function Ieraksts({ getmaxpage, pageoffset, editid }) {
    <div id="ieraksti" className="iecontent">
     {ieraksti.lenght === 0 ? <p>Nav ierakstu</p> : null}
     {ieraksti.map((ieraksts, index) => (
-     <div className="ieraksts" key={index} id={ieraksts.idposts}>
+     <div className="ieraksts" key={index} id={ieraksts.idposts}   >
       {deletestatus ? <input type="checkbox" id={ieraksts.idposts} /> : null}
       <h1>{ieraksts.title}</h1>
       <p>{ieraksts.pdesc}</p>
+      <div>
       {ieraksts.imgpath ? <img src={imgurl + ieraksts.imgpath} alt={ieraksts.title} /> : null}
       {ieraksts.imgarr ? <Multiimgdisplay imgarr={ieraksts.imgarr} /> : null}
+      </div>
       <button type="button" onClick={() => editid(ieraksts.idposts)}>
        Labot
       </button>
+      {
+        ieraksts.imgarr || ieraksts.imgpath ?  <button type="button" onClick={() => setgallerystate({ postid: ieraksts.idposts, statenr: 1 })}>Skatīt </button> : null
+      }
      </div>
     ))}
    </div>
