@@ -21,6 +21,8 @@
  --uploadbuttonhovercolor: #69a09d;
  --maxeditimgwidth: 300px;
  --maxeditimgheight: 300px;
+ --maxwindowwidth: 100vw;
+ --maxwindowheight: 100vh;
 }
 
 button {
@@ -131,7 +133,11 @@ input#searchbar:hover {
  text-wrap: pretty;
  margin: var(--image-margin);
 }
-
+#multiimg{
+    display: inline-flex;
+    float: left;
+    flex-wrap: wrap;
+}
 #pagenum {
  text-align: center;
  display: flex;
@@ -314,4 +320,48 @@ button.btn:hover {
  text-wrap: anywhere;
  text-overflow: clip;
  size: 200px;
+}
+
+.gallery {
+ position: fixed;
+ top: 30%;
+ left: 30%;
+ transform:  translate(0vw, -30vh);;
+ background-color: var(--UPLOADBGcolor);
+ padding: 20px;
+ border-radius: 10px;
+ align-self: center;
+
+z-index: 1000;
+}
+.gallery img {
+ max-width: 70vw;
+ max-height: 70vh;
+}
+.gallerynav {
+ display: inline-flex;
+ grid-template-columns: 1fr 1fr 1fr;
+ align-self: center;
+}
+.gallerynav img {
+    max-width:50px;
+    max-height: 50px;
+}
+.gallery .album{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+.album img{
+    max-width: 50px;
+    max-height: 50px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.gallery button {
+    max-width: 50px;
+    max-height: 50px;
+    align-self: auto;
+    text-align: justify;
 }
