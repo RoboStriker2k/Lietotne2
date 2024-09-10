@@ -33,7 +33,7 @@ function Ierakstuskaits() {
 
   return (
     <div id="postcntbox">
-      <p>Ierakstu skaits datubāze:</p>
+       <p>Kopējais ierakstu skaits datubāze:</p>
       <p id="postcount">{postcount}</p>
     </div>
   );

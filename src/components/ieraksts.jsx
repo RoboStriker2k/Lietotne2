@@ -76,7 +76,7 @@ function Ieraksts({ getmaxpage, pageoffset, editid }) {
     )}
    </div>
    <div id="postcntbox">
-    <p>Atrasto ierakstu skaits:{postcnt}</p>
+    <p>Atrasto ierakstu skaits datubāze: {postcnt}</p>
    </div>
    <div id="ieraksti" className="iecontent">
     {ieraksti.lenght === 0 ? <p>Nav ierakstu</p> : null}
