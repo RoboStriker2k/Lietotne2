@@ -7,7 +7,7 @@ function Ierakstuskaits() {
 
   useEffect(() => {
     function fetchdata() {
-      fetch(`http://localhost:3000/api/postscount/`, {
+      fetch(`http://${window.location.hostname}:3000/api/postscount/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ function Ierakstuskaits() {
 
   return (
     <div id="postcntbox">
-      <p>Ierakstu skaits datubāze:</p>
+       <p>Kopējais ierakstu skaits datubāze:</p>
       <p id="postcount">{postcount}</p>
     </div>
   );

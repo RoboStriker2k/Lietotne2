@@ -26,7 +26,7 @@ export default function Upload({ CLOSBTN }) {
     formdata.append("file", uploadstate.files[i]);
    }
   }
-  fetch("http://localhost:3000/api/addpost", {
+  fetch("http://"+window.location.hostname+":3000/api/addpost", {
    method: "post",
    body: formdata,
   })

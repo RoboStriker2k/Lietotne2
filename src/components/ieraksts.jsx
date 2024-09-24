@@ -6,7 +6,7 @@ import Galleryview from "./Galleryview";
 // eslint-disable-next-line react/prop-types
 function Ieraksts({ getmaxpage, pageoffset, editid }) {
  let [ieraksti, setIeraksti] = useState([]);
- let imgurl = "http://localhost:3000/getfoto/?file=";
+ let imgurl = "http://"+window.location.hostname+":3000/getfoto/?file=";
  let [maxpage, setmaxpage] = useState(0);
  let getpostammount = 5;
  let [poffset, setpoffset] = useState(0);
@@ -29,7 +29,7 @@ function Ieraksts({ getmaxpage, pageoffset, editid }) {
    formdata.append("ammount", ammount);
    formdata.append("offset", offset);
    formdata.append("searchtext", searchtext);
-   fetch("http://localhost:3000/search", {
+   fetch("http://"+window.location.hostname+":3000/search", {
     method: "post",
     body: formdata,
    })
@@ -76,7 +76,7 @@ function Ieraksts({ getmaxpage, pageoffset, editid }) {
     )}
    </div>
    <div id="postcntbox">
-    <p>Atrasto ierakstu skaits:{postcnt}</p>
+    <p>Atrasto ierakstu skaits datubāze: {postcnt}</p>
    </div>
    <div id="ieraksti" className="iecontent">
     {ieraksti.lenght === 0 ? <p>Nav ierakstu</p> : null}

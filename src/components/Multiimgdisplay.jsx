@@ -5,7 +5,7 @@ export default Multiimgdisplay;
 function Multiimgdisplay(props) {
   let imgarr=props.imgarr;
 let editstatus=props.editstatus;
- let imgurl = "http://localhost:3000/getfoto/?file=";
+ let imgurl = "http://"+window.location.hostname+":3000/getfoto/?file=";
 
  return (
   <div id="multiimgdisplay">
