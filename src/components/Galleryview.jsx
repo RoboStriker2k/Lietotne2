@@ -10,10 +10,10 @@ function Galleryview({ gallery, resetgallery }) {
   currimg: "",
   imageindex : 0
  });
- let imgurl = "http://localhost:3000/getfoto/?file=";
+ let imgurl = "http://"+window.location.hostname+":3000/getfoto/?file=";
  useEffect(() => {
   function getpost() {
-   fetch(`http://localhost:3000/api/getpost/?postiid=${gallery.postid}`, {
+   fetch(`http://${window.location.hostname}:3000/api/getpost/?postiid=${gallery.postid}`, {
     method: "GET",
    })
     .then((response) => response.json())

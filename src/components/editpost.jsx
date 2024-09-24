@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import Multiimgdisplay from "./Multiimgdisplay";
 // eslint-disable-next-line react/prop-types
 function EditPost({ editid, close }) {
- let imgurl = "http://localhost:3000/getfoto/?file=";
-
+ let imgurl = "http://"+window.location.hostname+":3000/getfoto/?file=";
  const [poststate, setpoststate] = useState({
   newtitle: "",
   newpdesc: "",
@@ -16,7 +15,7 @@ function EditPost({ editid, close }) {
  let [singlerun, setsinglerun] = useState(true);
  useEffect(() => {
   function getpost() {
-   fetch(`http://localhost:3000/api/getpost/?postiid=${editid}`, {
+   fetch(`http://${window.location.hostname}:3000/api/getpost/?postiid=${editid}`, {
     method: "GET",
    })
     .then((response) => response.json())
@@ -104,7 +103,7 @@ function EditPost({ editid, close }) {
   deleteform.append("replaceflag", replaceflag.toString());
   deleteform.append("removeflag", removeflag.toString());
   deleteform.append("idpost", editid.toString());
-  fetch(`http://localhost:3000/api/editpost/`, {
+  fetch("http://"+window.location.hostname+":3000/api/editpost/", {
    method: "POST",
    body: deleteform,
   })
@@ -217,7 +216,7 @@ function editfn(poststate, editid) {
  formdata.append("removeflag", "false");
  formdata.append("idpost", editid);
  console.log(formdata);
- fetch(`http://localhost:3000/api/editpost/`, {
+ fetch("http://"+window.location.hostname+":3000//api/editpost/", {
   method: "POST",
   body: formdata,
  })

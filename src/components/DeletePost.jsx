@@ -23,7 +23,7 @@ export function DeletePost() {
    deleteform.append("idlist", deleteselection[0]);
   }
 
-  fetch("http://localhost:3000/api/deleteposts", {
+  fetch("http://"+window.location.hostname+":3000/api/deleteposts", {
    method: "post",
    body: deleteform,
   })
